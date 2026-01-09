@@ -1,0 +1,26 @@
+package com.messenger.pojo;
+
+/*
+ * Copyright (c) 2026 Ayshi Shannidhya Panda. All rights reserved.
+ *
+ * This source code is confidential and intended solely for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure of this
+ * file, via any medium, is strictly prohibited.
+ *
+ * Project: Messenger
+ * Author: Ayshi Shannidhya Panda
+ * Created on: 08-01-2026
+ */
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Getter
+@Setter
+public class NumberVerifyList {
+    private String phoneNumber;
+    private Boolean verified;
+    private int otpLimit = 3;
+}
