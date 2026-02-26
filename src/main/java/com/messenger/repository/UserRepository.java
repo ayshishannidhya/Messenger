@@ -4,6 +4,8 @@ import com.messenger.models.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /*
  * Copyright (c) 2026 Ayshi Shannidhya Panda. All rights reserved.
  *
@@ -22,4 +24,6 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     boolean existsByMobNumber(String mobNumber);
 
     Users findByEmail(String email);
+
+    Optional<Users> findByMobNumber(String mob);
 }

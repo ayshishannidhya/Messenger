@@ -23,3 +23,4 @@ public interface OtpService {
 
     void sendSmsOtp(@NotBlank(message = "Mobile Number cant be empty") String mobNumber);
 }
+

@@ -28,7 +28,9 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v1/register", "/v1/verify", "/api/v1/login").permitAll()
+                        .requestMatchers("/v1/register",
+                                "/v1/verifyOtp",
+                                "/api/v1/login").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();

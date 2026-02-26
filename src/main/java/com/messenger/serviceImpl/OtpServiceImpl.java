@@ -3,9 +3,11 @@ package com.messenger.serviceImpl;
 import com.messenger.dto.OtpVerifyDto;
 import com.messenger.handler.NumberVerifyHandler;
 import com.messenger.models.Otp;
+import com.messenger.models.Users;
 import com.messenger.otp.OtpGenerator;
 import com.messenger.pojo.OtpPayload;
 import com.messenger.repository.OtpRepository;
+import com.messenger.repository.UserRepository;
 import com.messenger.service.OtpService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -35,6 +37,7 @@ public class OtpServiceImpl implements OtpService {
     private final OtpRepository otpRepository;
     private final JavaMailSender javaMailSender;
     private final SmsService smsService;
+    private final UserRepository userRepository;
     private final NumberVerifyHandler numberVerifyHandler;
 
 
@@ -56,6 +59,7 @@ public class OtpServiceImpl implements OtpService {
                 .isOtpExpired(false)
                 .expiryTime(LocalDateTime.now().plusSeconds(300))
                 .build());
+
     }
 
     @Override
@@ -79,13 +83,23 @@ public class OtpServiceImpl implements OtpService {
         record.setUsed(true);
         record.setOtpExpired(false);
         otpRepository.save(record);
+
+        String identifier = otpVerifyDto.getIdentifier();
+
+        Optional<Users> usersOptional = userRepository.findByMobNumber(identifier);
+
+        if (usersOptional.isPresent()) {
+            Users users = usersOptional.get();
+            users.setIsPhoneNumberVerified(true);
+            userRepository.save(users);
+        }
         return "Otp Verified Successfully";
     }
 
     @Override
     public void sendSmsOtp(String mobNumber) {
         String otp = OtpGenerator.generateOtp(6);
-        
+
 
         smsService.sendSms(new OtpPayload(mobNumber,
                 "Your Messenger OTP is: " + otp + " (valid 5 minutes)"));

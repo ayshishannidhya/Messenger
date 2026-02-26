@@ -43,6 +43,11 @@ public class UserController {
             otpService.sendSmsOtp(userCreateDTO.getMobNumber());
 
         }
+        if (userCreateDTO.getEmail() != null && !userCreateDTO.getEmail().isBlank()) {
+
+            otpService.sendMailOtp(userCreateDTO.getEmail());
+
+        }
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
@@ -50,7 +55,6 @@ public class UserController {
     String otpVerify(@RequestBody OtpVerifyDto otpVerifyDto) {
         return otpService.verifyOtp(otpVerifyDto);
     }
-
 
     @PostMapping("/login")
     Users login(String email, String password) {
