@@ -3,6 +3,7 @@ package com.messenger.repository;
 import com.messenger.models.Contacts;
 import com.messenger.models.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
  * Author: Ayshi Shannidhya Panda
  * Created on: 14-03-2026
  */
+@Repository
 public interface ContactRepository extends JpaRepository<Contacts, Long> {
     Optional<Contacts> existsBySenderAndReceiver(Users Sender, Users Receiver);
 }

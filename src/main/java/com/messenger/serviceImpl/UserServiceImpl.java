@@ -34,11 +34,13 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(userCreateDTO.getEmail())) {
             throw new IllegalArgumentException("Email already registered");
         }
-        if (userRepository.existsByMobNumber(userCreateDTO.getMobNumber())) {
+        if (userRepository.existsByMobNumber(userCreateDTO.getMobNumber()) != null ||
+                userRepository.existsByMobNumber(userCreateDTO.getMobNumber()).isPresent()) {
+
             throw new IllegalArgumentException("Mobile number already registered");
         }
 
-         
+
         Users user = userMapper.toEntity(userCreateDTO);
 
         user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));

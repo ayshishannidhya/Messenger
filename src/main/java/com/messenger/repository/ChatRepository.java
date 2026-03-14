@@ -2,6 +2,7 @@ package com.messenger.repository;
 
 import com.messenger.models.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /*
  * Copyright (c) 2026 Ayshi Shannidhya Panda. All rights reserved.
@@ -14,5 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Author: Ayshi Shannidhya Panda
  * Created on: 14-03-2026
  */
+@Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 }
