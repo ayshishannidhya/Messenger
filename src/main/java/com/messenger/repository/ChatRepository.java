@@ -1,10 +1,7 @@
 package com.messenger.repository;
 
-import com.messenger.models.Users;
+import com.messenger.models.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 /*
  * Copyright (c) 2026 Ayshi Shannidhya Panda. All rights reserved.
@@ -15,15 +12,7 @@ import java.util.Optional;
  *
  * Project: Messenger
  * Author: Ayshi Shannidhya Panda
- * Created on: 06-01-2026
+ * Created on: 14-03-2026
  */
-@Repository
-public interface UserRepository extends JpaRepository<Users, Long> {
-    boolean existsByEmail(String email);
-
-    Optional<Users> existsByMobNumber(String mobNumber);
-
-    Users findByEmail(String email);
-
-    Optional<Users> findByMobNumber(String mob);
+public interface ChatRepository extends JpaRepository<Chat, Long> {
 }
