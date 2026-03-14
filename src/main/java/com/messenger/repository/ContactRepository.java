@@ -20,5 +20,5 @@ import java.util.Optional;
  */
 @Repository
 public interface ContactRepository extends JpaRepository<Contacts, Long> {
-    Optional<Contacts> existsBySenderAndReceiver(Users Sender, Users Receiver);
+    Optional<Contacts> findByPerson1AndPerson2(Users person1, Users person2);
 }

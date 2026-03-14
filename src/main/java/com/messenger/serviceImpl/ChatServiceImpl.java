@@ -46,7 +46,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void sendPrivateMessage(String senderPhoneNumber,
                                    String receiverPhoneNumber,
-                                   ChatMessageDto chatMessageDto,
+                                   @NonNull ChatMessageDto chatMessageDto,
                                    Principal principal) {
 
         Users sender = userRepository.existsByMobNumber(senderPhoneNumber)
@@ -62,7 +62,7 @@ public class ChatServiceImpl implements ChatService {
             }
         }
 
-        Contacts contactsPresentOrNot = contactRepository.existsBySenderAndReceiver(sender, receiver)
+        Contacts contactsPresentOrNot = contactRepository.findByPerson1AndPerson2(sender, receiver)
                 .orElse(null);
 
         if (contactsPresentOrNot != null) {
