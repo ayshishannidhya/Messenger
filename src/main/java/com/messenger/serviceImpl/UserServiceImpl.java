@@ -31,12 +31,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users createUser(@NonNull UserCreateDTO userCreateDTO) {
+        if (userRepository.existsByUsername(userCreateDTO.getUsername())) {
+            throw new IllegalArgumentException("Username already registered");
+        }
         if (userRepository.existsByEmail(userCreateDTO.getEmail())) {
             throw new IllegalArgumentException("Email already registered");
         }
-        if (userRepository.existsByMobNumber(userCreateDTO.getMobNumber()) != null ||
-                userRepository.existsByMobNumber(userCreateDTO.getMobNumber()).isPresent()) {
-
+        if (userRepository.existsByMobNumber(userCreateDTO.getMobNumber())) {
             throw new IllegalArgumentException("Mobile number already registered");
         }
 

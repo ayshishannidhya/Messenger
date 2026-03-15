@@ -30,7 +30,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v1/register",
                                 "/v1/verifyOtp",
-                                "/api/v1/login").permitAll()
+                                "/api/v1/login",
+                                "/v1/login",
+                                "/ws/**",
+                                "/ws").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();

@@ -50,10 +50,10 @@ public class ChatServiceImpl implements ChatService {
                                    @NonNull ChatMessageDto chatMessageDto,
                                    Principal principal) {
 
-        Users sender = userRepository.existsByMobNumber(senderPhoneNumber)
+        Users sender = userRepository.findByMobNumber(senderPhoneNumber)
                 .orElseThrow(() -> new UsernameNotFoundException("Sender: " + senderPhoneNumber));
 
-        Users receiver = userRepository.existsByMobNumber(receiverPhoneNumber)
+        Users receiver = userRepository.findByMobNumber(receiverPhoneNumber)
                 .orElseThrow(() -> new UsernameNotFoundException("Receiver: " + receiverPhoneNumber));
 
         if (chatMessageDto.getMessage() == null || chatMessageDto.getMessage().isBlank()) {

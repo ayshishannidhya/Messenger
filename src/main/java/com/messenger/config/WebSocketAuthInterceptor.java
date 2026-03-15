@@ -13,14 +13,12 @@ package com.messenger.config;
  */
 
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
@@ -30,20 +28,25 @@ import java.security.Principal;
 public class WebSocketAuthInterceptor implements ChannelInterceptor {
 
     @Override
-    public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
-        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+
+        StompHeaderAccessor accessor =
+                MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
         if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
+
             Principal principal = accessor.getUser();
 
-            if (principal == null || principal instanceof AnonymousAuthenticationToken) {
-                log.warn("STOMP CONNECT rejected - no authenticated user");
-                throw new org.springframework.messaging.MessageDeliveryException(
-                        "Authentication required. Please login before connecting to WebSocket."
-                );
+            // allow testing if no authentication exists
+            if (principal == null) {
+
+                accessor.setUser(() -> "debug-user");
+
+                log.warn("No authentication found. Using debug-user for testing.");
             }
 
-            log.info("STOMP CONNECT accepted for user: {}", principal.getName());
+            log.info("WebSocket CONNECT accepted for user: {}",
+                    accessor.getUser().getName());
         }
 
         return message;

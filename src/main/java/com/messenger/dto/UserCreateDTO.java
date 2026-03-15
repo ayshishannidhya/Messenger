@@ -1,5 +1,7 @@
 package com.messenger.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 /*
  * Copyright (c) 2026 Ayshi Shannidhya Panda. All rights reserved.
  *
@@ -23,6 +25,11 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class UserCreateDTO {
+
+    @NotBlank(message = "Username cant be empty")
+    @Size(min = 3, max = 30)
+    @JsonAlias("userName")
+    private String username;
 
     @NotBlank(message = "First Name cant be empty")
     @Size(min = 2, max = 15)

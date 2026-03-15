@@ -31,17 +31,7 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*")//Allows frontend apps from any domain to connect.
-                .withSockJS()
-                .setHeartbeatTime(25000);
-
-        /*This second endpoint supports native WebSocket without SockJS.
-          So clients can connect via:
-          ws://server/ws
-          or
-          http://server/ws (SockJS fallback)
-          */
+        // Native WebSocket STOMP endpoint (with context path: ws://host:port/api/ws)
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*");
     }

@@ -21,6 +21,7 @@ public class UserMapper {
     public Users toEntity(@NonNull UserCreateDTO userCreateDTO) {
 
         return Users.builder()
+                .username(userCreateDTO.getUsername())
                 .firstName(userCreateDTO.getFirstName())
                 .lastName(userCreateDTO.getLastName())
                 .email(userCreateDTO.getEmail())
