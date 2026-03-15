@@ -2,6 +2,7 @@ package com.messenger.serviceImpl;
 
 import com.messenger.config.WebSocketEventListener;
 import com.messenger.dto.ChatMessageDto;
+import com.messenger.dto.ContactsDto;
 import com.messenger.mappers.ChatDtoMapper;
 import com.messenger.models.Chat;
 import com.messenger.models.Contacts;
@@ -108,6 +109,30 @@ public class ChatServiceImpl implements ChatService {
         }
         contacts.getChats().add(chat);
         contacts = contactRepository.save(contacts);
+        ContactsDto contactsDto = ContactsDto.builder()
+                .contactId(contacts.getContactId())
+                .person1(contacts.getPerson1())
+                .person2(contacts.getPerson2())
+                .chats(contacts.getChats().stream()
+                        .map(ChatDtoMapper::toDto).toList())
+                .build();
+
+        if (webSocketEventListener.isUserOnline(receiver.getMobNumber())) {
+            messageTemplate.convertAndSendToUser(
+                    receiver.getMobNumber(),
+                    "/queue/messages",
+                    contactsDto
+            );
+        } else {
+            // TODO: send push notification if user is not online
+        }
+
+        // Send acknowledgment back to sender
+        messageTemplate.convertAndSendToUser(
+                principal.getName(),
+                "/queue/messages",
+                contactsDto
+        );
 
     }
 
