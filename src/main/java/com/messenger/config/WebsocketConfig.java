@@ -28,6 +28,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final WebSocketAuthInterceptor webSocketAuthInterceptor;
+    private final StompFrameTerminationDecoratorFactory stompFrameTerminationDecoratorFactory;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -40,7 +41,8 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
         registry.setMessageSizeLimit(128 * 1024)
                 .setSendBufferSizeLimit(512 * 1024)
-                .setSendTimeLimit(20000);
+                .setSendTimeLimit(20000)
+                .addDecoratorFactory(stompFrameTerminationDecoratorFactory);
     }
 
     @Override

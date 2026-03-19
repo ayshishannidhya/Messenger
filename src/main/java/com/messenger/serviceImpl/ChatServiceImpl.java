@@ -17,6 +17,7 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -45,10 +46,15 @@ public class ChatServiceImpl implements ChatService {
 
 
     @Override
+    @Transactional
     public void sendPrivateMessage(String senderPhoneNumber,
                                    String receiverPhoneNumber,
                                    @NonNull ChatMessageDto chatMessageDto,
                                    Principal principal) {
+
+        String principalName = principal != null ? principal.getName() : senderPhoneNumber;
+        log.info("Processing private chat - principal: {}, sender: {}, receiver: {}",
+                principalName, senderPhoneNumber, receiverPhoneNumber);
 
         Users sender = userRepository.findByMobNumber(senderPhoneNumber)
                 .orElseThrow(() -> new UsernameNotFoundException("Sender: " + senderPhoneNumber));
@@ -89,7 +95,7 @@ public class ChatServiceImpl implements ChatService {
             }
             // Send acknowledgment back to sender
             messageTemplate.convertAndSendToUser(
-                    principal.getName(),
+                    principalName,
                     "/queue/messages",
                     chatDto
             );
@@ -129,7 +135,7 @@ public class ChatServiceImpl implements ChatService {
 
         // Send acknowledgment back to sender
         messageTemplate.convertAndSendToUser(
-                principal.getName(),
+                principalName,
                 "/queue/messages",
                 contactsDto
         );

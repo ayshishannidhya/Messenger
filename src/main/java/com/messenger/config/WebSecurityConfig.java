@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,18 +25,19 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v1/register",
                                 "/v1/verifyOtp",
                                 "/api/v1/login",
-                                "/v1/login",
-                                "/ws/**",
-                                "/ws").permitAll()
+                                "/v1/login").permitAll()
                         .anyRequest().authenticated()
-                );
+                ).sessionManagement(
+                        session -> session
+                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                                .maximumSessions(1));
         return http.build();
     }
 

@@ -50,8 +50,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users login(String email, String rawPassword) {
+        if (email == null || email.isBlank() || rawPassword == null || rawPassword.isBlank()) {
+            throw new IllegalArgumentException("Email and password are required");
+        }
 
         Users users = userRepository.findByEmail(email);
+        if (users == null) {
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+
         if (!passwordEncoder.matches(rawPassword, users.getPassword())) {
             throw new IllegalArgumentException("Invalid credentials");
         }

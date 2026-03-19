@@ -56,9 +56,5 @@ public class UserController {
         return otpService.verifyOtp(otpVerifyDto);
     }
 
-    @PostMapping("/login")
-    Users login(String email, String password) {
-        return userService.login(email, password);
-    }
 
 }
