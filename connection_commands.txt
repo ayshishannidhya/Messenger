@@ -1,0 +1,19 @@
+CONNECT
+accept-version:1.2
+host:localhost
+
+SUBSCRIBE
+id:sub-msg
+destination:/user/queue/messages
+
+SUBSCRIBE
+id:sub-err
+destination:/user/queue/errors
+
+SEND
+destination:/app/chat.private
+content-type:application/json
+senderPhone:{senderPhone}
+receiverPhone:{receiverPhone}
+
+{"messageType":"TEXT","message":"Hello from A"}
